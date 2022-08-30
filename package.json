@@ -1,12 +1,18 @@
 {
-  "name": "haunted-starter-app",
+  "name": "cocktail-assistant",
   "version": "1.0.0",
-  "description": "A project for creating apps with Haunted and lit-html.",
+  "description": "Cocktail assistant App",
   "main": "index.html",
-  "scripts": {},
-  "dependencies": {
-    "haunted": "4.5.1",
-    "lit-html": "1.1.1"
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
   },
-  "keywords": ["web-components", "lit-html"]
+  "dependencies": {
+    "haunted": "^5.0.0",
+    "lit-html": "^2.2.4"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.6.1"
+  },
+  "keywords": []
 }

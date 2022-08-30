@@ -3,7 +3,7 @@ import {
   component,
   useState,
   useEffect
-} from "https://unpkg.com/haunted/haunted.js";
+} from "haunted";
 
 function FullName(el) {
   const [first, setFirst] = useState("Happy");
@@ -11,7 +11,7 @@ function FullName(el) {
 
   useEffect(() => {
     const event = new CustomEvent('change', {
-      detail: `${first} ${last}`
+      detail: `${first}`
     });
     this.dispatchEvent(event);
   }, [first, last]);
@@ -25,15 +25,6 @@ function FullName(el) {
         type="text"
         name="first"
         id="first-name"
-      />
-
-      <label for="last-name">Last</label>
-      <input
-        value=${last}
-        @keyup=${ev => setLast(ev.target.value)}
-        type="text"
-        name="last"
-        id="last-name"
       />
     </div>
 
