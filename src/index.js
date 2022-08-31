@@ -6,44 +6,68 @@ import {
 import "./FullName.js";
 import "./SearchInput.js";
 import "./Drink.js";
+import "./Toaster.js";
+import "./ShoppingList.js";
 import { nothing } from 'lit';
-import { until } from 'lit/directives/until.js';
 
 function App() {
-  const [name, setName] = useState("");
   const [results, setResults] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+  const endpoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+  const [ingredientsList, setIngredientsList] = useState([]);
 
-  const onSearch = async (query) => {
-    fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita')
+  const onSearch = (query) => {
+    setToastMessage('Searching...');
+    fetch(`${endpoint}${query}`)
       .then(res => res.json())
-      .then(data => setResults(data.drinks))
+      .then(data => { 
+        setResults(data.drinks); 
+        if (!data.drinks) {
+          setToastMessage('No results found.')
+          return;
+        }
+        setToastMessage('Here are the results.') })
   }
 
+  const onAddIngredients = (newIngredients) => {
+    const ingredientsToAdd = ingredientsList;
+
+    newIngredients.forEach(ingredient => {
+      if (!ingredientsList.includes(ingredient)) {
+        ingredientsToAdd.push(ingredient)
+      }
+    })
+
+    setIngredientsList([...ingredientsList]);
+  }
+
+
   return html`
-    <h2>User Page</h2>
-
-    <h3>${name}</h3>
-
-    <fieldset>
-      <legend>Change name:</legend>
-      <full-name @change=${ev => setName(ev.detail)}></full-name>
-    </fieldset>
-
     <search-input @init-search=${event => onSearch(event.detail.query)}></search-input>
     <br>
     
 
-    ${results ? results.map(result => html`<drink-result .listDrinks=${result}></drink-result>`) : nothing}
+    <div class="container">
+      <div class="drinks-list">
+        ${results ? 
+          results.map(result => html`<drink-result @add-ingredients=${event => onAddIngredients(event.detail.ingredients)} .drinks=${result}></drink-result>`) : 
+          nothing}
+      </div>
+      <shopping-list .ingredientsList=${ingredientsList}></shopping-list>
+    </div>
+
+
+    <app-toaster .message=${toastMessage}></app-toaster>
 
     <style>
-    fieldset {
-    border: none;
-    }
+      fieldset {
+        border: none;
+      }
 
-    legend {
-      padding: 0;
-      margin - bottom: 0.5rem;
-    }
+      .container {
+        display: flex;
+        justify-content: center;
+      }
     </style>
     `;
 }
@@ -51,3 +75,8 @@ function App() {
 customElements.define("my-app", component(App));
 
 // ${results ? html`<drink-result .listDrinks=${results}></drink-result>` : nothing}    
+
+// ${toastMessage ?
+//   html`<app-toaster .message=${toastMessage}></app-toaster>` :
+//   nothing
+// }

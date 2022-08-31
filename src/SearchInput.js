@@ -23,13 +23,34 @@ function SearchInput(_el) {
   }
 
   return html`
-  <input
-    value=${query}
-    type="text"
-    name="query"
-    @keyup=${ev => setQuery(ev.target.value)}
-  />
-  <button @click=${initSearch}>Search</button>
+  <div>
+    <input
+      value=${query}
+      type="text"
+      name="query"
+      @keyup=${ev => setQuery(ev.target.value)}
+    />
+    <button @click=${initSearch}>Search</button>
+  </div>
+
+  <style>
+    div {
+      margin-bottom: 10px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    input {
+      height: 100%;
+      width: 40%;
+      box-sizing: border-box;
+    }
+
+    button {
+      height: 100%;
+    }
+  </style>
   `
 }
 
